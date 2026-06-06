@@ -2,7 +2,26 @@
   "name": "skill-management",
   "version": "0.1.0",
   "description": "Local-first AI agent skill manager demo for Codex and Claude Code.",
+  "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ARETE-zzwl/skill-management.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ARETE-zzwl/skill-management/issues"
+  },
+  "homepage": "https://github.com/ARETE-zzwl/skill-management#readme",
+  "keywords": [
+    "ai-agents",
+    "skills",
+    "codex",
+    "claude-code",
+    "local-first"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "bin": {
     "skillmgr": "./dist/cli.js"
   },
