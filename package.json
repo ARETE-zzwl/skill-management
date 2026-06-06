@@ -34,7 +34,7 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "commander": "^12.1.0",
+    "commander": "^15.0.0",
     "gray-matter": "^4.0.3",
     "zod": "^3.25.67"
   },
