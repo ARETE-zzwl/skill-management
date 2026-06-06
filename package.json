@@ -1,0 +1,29 @@
+{
+  "name": "skill-management",
+  "version": "0.1.0",
+  "description": "Local-first AI agent skill manager demo for Codex and Claude Code.",
+  "type": "module",
+  "bin": {
+    "skillmgr": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "studio": "tsx src/server.ts",
+    "start": "node dist/server.js",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "gray-matter": "^4.0.3",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.11",
+    "playwright": "^1.60.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
+  }
+}

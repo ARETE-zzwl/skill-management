@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Agent Skill 管理台</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="rail" aria-label="主导航">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">技</span>
+          <div>
+            <h1>Skill 管理台</h1>
+            <p>Codex / Claude Code 共享</p>
+          </div>
+        </div>
+        <nav class="nav-list" aria-label="页面分区">
+          <a href="#catalog">精选库</a>
+          <a href="#installed">已导入</a>
+          <a href="#profiles">组合</a>
+          <a href="#roots">路径</a>
+        </nav>
+        <div class="rail-note">
+          <span>本地注册表</span>
+          <code>.skillmgr/registry.json</code>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="hero">
+          <div>
+            <p class="kicker">LOCAL FIRST · MULTI AGENT</p>
+            <h2>AI Agent Skill 管理台</h2>
+            <p class="hero-copy">精选、导入、查看说明，并一键共享到 Codex 与 Claude Code。</p>
+          </div>
+          <div class="hero-actions">
+            <label>
+              <span>安装范围</span>
+              <select id="install-scope">
+                <option value="project">当前项目</option>
+                <option value="user">全局用户</option>
+              </select>
+            </label>
+            <button type="button" id="refresh-button">刷新</button>
+          </div>
+        </header>
+
+        <section class="metric-grid" aria-label="概览">
+          <article>
+            <strong id="metric-skills">0</strong>
+            <span>已导入</span>
+          </article>
+          <article>
+            <strong id="metric-installed">0</strong>
+            <span>已安装副本</span>
+          </article>
+          <article>
+            <strong id="metric-conflicts">0</strong>
+            <span>冲突</span>
+          </article>
+          <article>
+            <strong id="metric-catalog">0</strong>
+            <span>精选源</span>
+          </article>
+        </section>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <section class="guide-panel" aria-labelledby="guide-title">
+          <div class="guide-copy">
+            <p class="kicker">GET STARTED</p>
+            <h3 id="guide-title">5 分钟上手流程</h3>
+            <p>先从精选库下载一个 skill，再查看说明和安全扫描，最后共享安装到 Codex 与 Claude Code。安装完成后，在对话里直接点名调用。</p>
+          </div>
+          <ol class="guide-steps">
+            <li>
+              <strong>选择 Skill</strong>
+              <span>在 <a href="#catalog">精选库</a> 搜索 `nature`、`react`、`microsoft` 等关键词。</span>
+            </li>
+            <li>
+              <strong>下载导入</strong>
+              <span>点击“下载导入”，或粘贴 GitHub tree URL 到快捷导入框。</span>
+            </li>
+            <li>
+              <strong>查看说明</strong>
+              <span>在 <a href="#installed">已导入</a> 点击“说明”，检查调用示例、兼容矩阵和安全扫描。</span>
+            </li>
+            <li>
+              <strong>共享安装</strong>
+              <span>点击“共享”，把 skill 同步到所有支持的 agent；也可以只装到 Codex 或 Claude。</span>
+            </li>
+            <li>
+              <strong>显式调用</strong>
+              <span>例如：<code>使用 nature-writing skill，帮我润色这段摘要。</code></span>
+            </li>
+          </ol>
+          <div class="prompt-cards" aria-label="示例提示词">
+            <button type="button" class="prompt-copy" data-copy="使用 nature-writing skill，帮我把这段 Results 改成 Nature 风格。">Nature 写作</button>
+            <button type="button" class="prompt-copy" data-copy="调用 react-best-practices，审查这个 Next.js 页面性能问题。">前端审查</button>
+            <button type="button" class="prompt-copy" data-copy="使用 microsoft-docs，查找 Azure AI Search 最新索引配置文档。">微软文档</button>
+          </div>
+        </section>
+
+        <section class="control-strip" aria-label="快捷导入">
+          <form id="import-form" class="inline-form">
+            <label>
+              <span>GitHub tree URL / 本地目录</span>
+              <input id="import-source" type="text" autocomplete="off" placeholder="https://github.com/.../tree/main/skills/nature-writing" />
+            </label>
+            <label>
+              <span>子目录</span>
+              <input id="import-subdir" type="text" autocomplete="off" placeholder="可选" />
+            </label>
+            <button type="submit">导入</button>
+          </form>
+          <label class="search-box">
+            <span>筛选</span>
+            <input id="search-input" type="search" autocomplete="off" placeholder="搜索 nature / writing / react" />
+          </label>
+        </section>
+
+        <section class="panel" id="catalog" aria-labelledby="catalog-title">
+          <div class="panel-heading">
+            <div>
+              <p class="kicker">CURATED SOURCES</p>
+              <h3 id="catalog-title">精选开源 Skill</h3>
+            </div>
+            <div class="heading-actions">
+              <p>已优先放入 Nature 学术写作、Vercel 前端工程、Anthropic 官方模板等适合跨 agent 共享的来源。</p>
+              <button type="button" class="secondary" data-action="install-starter-pack">导入推荐开箱包</button>
+            </div>
+          </div>
+          <div id="catalog-list" class="catalog-grid"></div>
+        </section>
+
+        <section class="dashboard-grid">
+          <div class="stack">
+            <section class="panel" id="installed" aria-labelledby="skills-title">
+              <div class="panel-heading">
+                <div>
+                  <p class="kicker">REGISTRY</p>
+                  <h3 id="skills-title">已导入 Skill</h3>
+                </div>
+                <p>查看说明、安装到单个 agent，或共享到所有支持的 agent。</p>
+              </div>
+              <div id="skills-list" class="skill-list"></div>
+            </section>
+
+            <section class="panel" id="conflicts" aria-labelledby="conflicts-title">
+              <div class="panel-heading">
+                <div>
+                  <p class="kicker">CONFLICTS</p>
+                  <h3 id="conflicts-title">冲突检查</h3>
+                </div>
+              </div>
+              <div id="conflict-list" class="conflict-list"></div>
+            </section>
+          </div>
+
+          <aside class="stack">
+            <section class="panel" id="profiles" aria-labelledby="profiles-title">
+              <div class="panel-heading">
+                <div>
+                  <p class="kicker">PROFILES</p>
+                  <h3 id="profiles-title">高效组合</h3>
+                </div>
+              </div>
+              <form id="profile-form" class="profile-form">
+                <label>
+                  <span>组合名称</span>
+                  <input id="profile-name" type="text" autocomplete="off" placeholder="nature-paper" />
+                </label>
+                <label>
+                  <span>Skill Slug</span>
+                  <input id="profile-skills" type="text" autocomplete="off" placeholder="nature-writing,nature-citation" />
+                </label>
+                <label>
+                  <span>默认 Agent</span>
+                  <select id="profile-agent">
+                    <option value="">任意</option>
+                    <option value="codex">Codex</option>
+                    <option value="claude-code">Claude Code</option>
+                  </select>
+                </label>
+                <button type="submit">保存组合</button>
+              </form>
+              <div id="template-list" class="template-list"></div>
+              <div id="profile-list" class="profile-list"></div>
+              <div id="recommendations" class="recommendations"></div>
+            </section>
+
+            <section class="panel" id="roots" aria-labelledby="roots-title">
+              <div class="panel-heading">
+                <div>
+                  <p class="kicker">AGENT ROOTS</p>
+                  <h3 id="roots-title">安装路径</h3>
+                </div>
+              </div>
+              <div id="roots-list" class="roots-list"></div>
+            </section>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="skill-dialog" class="skill-dialog">
+      <form method="dialog">
+        <button class="dialog-close" aria-label="关闭">×</button>
+      </form>
+      <div id="skill-detail"></div>
+    </dialog>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
