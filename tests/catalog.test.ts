@@ -23,5 +23,8 @@ describe("CATALOG_SKILLS", () => {
     expect(CATALOG_SKILLS.some((skill) => skill.repository === "https://github.com/microsoft/skills")).toBe(true);
     expect(CATALOG_SKILLS.some((skill) => skill.repository === "https://github.com/apify/agent-skills")).toBe(true);
     expect(CATALOG_SKILLS.some((skill) => skill.repository === "https://github.com/mattpocock/skills")).toBe(true);
+    expect(CATALOG_SKILLS.some((skill) => skill.repository === "https://github.com/addyosmani/agent-skills")).toBe(true);
+    expect(CATALOG_SKILLS.some((skill) => skill.repository === "https://github.com/github/awesome-copilot")).toBe(true);
+    expect(CATALOG_SKILLS.some((skill) => skill.repository === "https://github.com/addyosmani/web-quality-skills")).toBe(true);
   });
 });

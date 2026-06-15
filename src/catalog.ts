@@ -1,3 +1,4 @@
+import { HIGH_STAR_CATALOG_SKILLS } from "./catalogHighStar.js";
 import type { CatalogSkill } from "./types.js";
 
 export const CATALOG_SKILLS: CatalogSkill[] = [
@@ -68,7 +69,7 @@ export const CATALOG_SKILLS: CatalogSkill[] = [
   },
   {
     id: "vercel-react-best-practices",
-    name: "react-best-practices",
+    name: "vercel-react-best-practices",
     title: "React/Next 最佳实践",
     description: "Vercel 官方 React 与 Next.js 性能优化规则集合。",
     source: "https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices",
@@ -637,5 +638,6 @@ export const CATALOG_SKILLS: CatalogSkill[] = [
     agents: ["codex", "claude-code"],
     featuredReason: "适合 Azure SDK + Rust 项目中的文档驱动实现。",
     examplePrompt: "使用 azure-storage-blob-rust，帮我写一个上传文件到 Azure Blob 的 Rust 示例。"
-  }
+  },
+  ...HIGH_STAR_CATALOG_SKILLS
 ];

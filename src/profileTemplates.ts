@@ -12,8 +12,49 @@ export const PROFILE_TEMPLATES: ProfileTemplate[] = [
     id: "frontend-dev",
     title: "前端开发",
     description: "UI 设计、React/Next 最佳实践、浏览器验证和前端工程工作流。",
-    skills: ["web-design-guidelines", "react-best-practices", "frontend-design", "webapp-testing"],
+    skills: [
+      "frontend-design",
+      "frontend-ui-engineering",
+      "premium-frontend-ui",
+      "gsap-framer-scroll-animation",
+      "vercel-react-best-practices",
+      "web-design-guidelines",
+      "frontend-design-review",
+      "webapp-testing",
+      "browser-testing-with-devtools"
+    ],
     tags: ["frontend", "react", "ui"]
+  },
+  {
+    id: "engineering-quality",
+    title: "Engineering Quality",
+    description: "High-star workflow skills for scoped implementation, API boundaries, source-driven coding, documentation, and release readiness.",
+    skills: [
+      "using-agent-skills",
+      "incremental-implementation",
+      "api-and-interface-design",
+      "source-driven-development",
+      "documentation-and-adrs",
+      "ci-cd-and-automation",
+      "observability-and-instrumentation",
+      "shipping-and-launch",
+      "agentic-eval"
+    ],
+    tags: ["engineering", "workflow", "delivery"]
+  },
+  {
+    id: "security-audit",
+    title: "Security Audit",
+    description: "Security, CodeQL, OWASP agent-risk, and supply-chain integrity skills for agent and application repositories.",
+    skills: ["security-and-hardening", "codeql", "agent-owasp-compliance", "agent-supply-chain"],
+    tags: ["security", "codeql", "owasp"]
+  },
+  {
+    id: "web-quality",
+    title: "Web Quality",
+    description: "Lighthouse-style web quality, Core Web Vitals, accessibility, SEO, performance, and browser debugging skills.",
+    skills: ["web-quality-audit", "core-web-vitals", "accessibility", "seo", "performance-optimization", "chrome-devtools"],
+    tags: ["web", "performance", "accessibility"]
   },
   {
     id: "document-workbench",
