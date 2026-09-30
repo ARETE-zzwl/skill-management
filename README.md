@@ -1,33 +1,28 @@
-# Skill Management Demo
+# Skill Management
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[中文](#中文) · [English](#english)
 
-Local-first AI agent skill manager demo for Codex and Claude Code.
+## 中文
 
-This project provides a practical CLI and local Studio UI for managing agent skills without a hosted backend. It can scan skill folders, validate `SKILL.md` metadata, import local or Git-based skills, install skills into Codex and Claude Code targets, and manage reusable skill profiles.
+用于管理 Codex 和 Claude Code skills 的本地工具，提供命令行和浏览器界面。
 
-## Features
+它把 skills 的导入、检查和安装分开处理：先导入本地目录或 GitHub 仓库，检查元数据和名称冲突，再安装到指定工具的用户目录或项目目录。常用的一组 skills 可以保存成 profile，之后一起安装。
 
-- scan Codex and Claude Code skill folders
-- validate Agent Skills metadata in `SKILL.md`
-- import local folders or GitHub tree URLs into a local registry
-- detect basic name and trigger conflicts
-- install skills into user or project scope
-- create and apply skill profiles
-- run a local Studio UI backed by the same registry and installer
-- view each imported skill's instructions
-- import curated open-source skills from the Studio catalog
-- distinguish imported skills from installed/callable skills
+目前是 demo，注册表和源码缓存都保存在本地，不需要部署服务端。
 
-## Quick Start
+### 开始使用
+
+需要 Node.js 20 或更新版本；从 GitHub 导入时还需要 Git。
 
 ```bash
+git clone https://github.com/ARETE-zzwl/skill-management.git
+cd skill-management
 npm install
 npm run build
 node dist/cli.js --help
 ```
 
-Try the bundled example skill:
+试一下仓库里的示例：
 
 ```bash
 node dist/cli.js validate examples/skills/pdf
@@ -38,27 +33,17 @@ node dist/cli.js profile create docs --skills pdf
 node dist/cli.js profile apply docs --agent codex --scope project
 ```
 
-Run the local Studio UI:
+最后一步会安装到当前项目的 `.agents/skills` 目录。仅导入注册表还不等于已安装。
+
+启动浏览器界面：
 
 ```bash
 npm run studio
 ```
 
-Then open `http://localhost:4317`.
+打开 [localhost:4317](http://localhost:4317)。界面和命令行使用同一份本地注册表。
 
-## Commands
-
-| Command | Description |
-| --- | --- |
-| `npm run typecheck` | Run TypeScript without emitting files. |
-| `npm test` | Run the Vitest test suite. |
-| `npm run build` | Compile TypeScript into `dist/`. |
-| `npm run studio` | Start the local Studio UI server. |
-| `npm run dev` | Run the CLI source entry with `tsx`. |
-
-## Supported Skill Layout
-
-The demo expects the Agent Skills shape:
+### Skill 格式
 
 ```text
 skill-name/
@@ -68,7 +53,7 @@ skill-name/
   assets/
 ```
 
-`SKILL.md` must contain YAML frontmatter with at least:
+`SKILL.md` 至少需要包含以下 YAML 元数据；其他目录按需添加：
 
 ```yaml
 ---
@@ -77,50 +62,63 @@ description: Work with PDF files.
 ---
 ```
 
-Optional fields recognized by this demo:
+工具也识别 `version`、`tags`、`triggers` 和 `agents` 字段。
 
-```yaml
-version: 0.1.0
-tags: [documents, pdf]
-triggers: [pdf, ocr]
-agents: [codex, claude-code]
+### 安装位置和本地文件
+
+| 工具 | 用户目录 | 项目目录 |
+| --- | --- | --- |
+| Codex | `~/.agents/skills` | `.agents/skills` |
+| Claude Code | `~/.claude/skills` | `.claude/skills` |
+
+可用 `--target-root` 指定其他安装目录。注册表和源码缓存位于当前工作目录的 `.skillmgr/`。这些目录不提交到仓库。
+
+导入第三方 skill 前，先查看它的脚本和许可证。工具提供基础冲突检查和安全扫描，具体行为仍需要读源文件确认。
+
+### 开发
+
+```bash
+npm run typecheck
+npm test
+npm run build
 ```
 
-## Agent Targets
+贡献说明见 [CONTRIBUTING.md](CONTRIBUTING.md)，安全问题见 [SECURITY.md](SECURITY.md)。
 
-Default installation paths:
+## English
 
-- Codex user scope: `~/.agents/skills`
-- Codex project scope: `.agents/skills`
-- Claude Code user scope: `~/.claude/skills`
-- Claude Code project scope: `.claude/skills`
+A local tool for managing Codex and Claude Code skills, with a CLI and a browser UI.
 
-Use `--target-root` when you want to install into a sandbox folder while testing.
+Import a local folder or GitHub repository, check its metadata and name conflicts, then install it into a user or project directory. Profiles let you save and install a group of skills together. This is a demo; the registry and source cache stay on your machine.
 
-## Repository Data
+### Get started
 
-Project-scope install target folders such as `.agents/` and `.claude/` are local generated data and are intentionally not committed. The local registry and source cache live under `.skillmgr/`, which is also ignored.
+Use Node.js 20 or later. Git is also needed for GitHub imports.
 
-The repository keeps source code, tests, web assets, and example skills. Project install folders can be recreated by running the CLI profile or install commands.
+```bash
+git clone https://github.com/ARETE-zzwl/skill-management.git
+cd skill-management
+npm install
+npm run build
+node dist/cli.js --help
+```
 
-## Security Notes
+The example above validates and imports the bundled PDF skill, checks conflicts, then installs the `docs` profile into the current project's `.agents/skills` directory. Importing a skill into the registry does not install it.
 
-Imported skills may include scripts, references, and assets from third-party repositories. Review upstream licenses before redistributing imported skills, and review security scan warnings before installing or sharing a skill.
+Run `npm run studio` and open [localhost:4317](http://localhost:4317) for the browser UI. It uses the same registry as the CLI.
 
-For sensitive security reports, see [SECURITY.md](SECURITY.md).
+### Files and installation targets
 
-## Contributing
+A skill needs a `SKILL.md` file with YAML frontmatter containing `name` and `description`. Optional fields include `version`, `tags`, `triggers` and `agents`; scripts, references and assets can live alongside it.
 
-Issues and pull requests are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before contributing.
+Default targets are `~/.agents/skills` or `.agents/skills` for Codex, and `~/.claude/skills` or `.claude/skills` for Claude Code. Use `--target-root` to override the target. The registry and source cache live in `.skillmgr/` under the current working directory. Generated directories are ignored by Git.
 
-## 中文说明
+Read third-party scripts and licenses before installation or redistribution. Conflict checks and security scans are basic checks, so review the source as well.
 
-这是一个本地优先的 AI Agent 技能管理 demo，面向 Codex 和 Claude Code。当前版本提供 CLI 和本地 Studio UI，用来扫描、导入、校验、安装和组合 Agent Skills。
+### Development
 
-本仓库不会提交 `.agents/`、`.claude/`、`.skillmgr/` 这些本地生成数据目录；公开仓库只保留源码、测试、网页资源和示例 skill。
-
-如果从精选库或 GitHub URL 导入第三方 skill，请在安装和分享前检查上游许可证与安全扫描结果。
+Run `npm run typecheck`, `npm test` and `npm run build`. See [CONTRIBUTING.md](CONTRIBUTING.md) for contributions and [SECURITY.md](SECURITY.md) for security reports.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+[MIT](LICENSE).
